@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+.result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Makes the div take the full height of the screen */
+  font-size: 48px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+.no {
+  background-color: #ff4d4d; /* Red accent for "No" */
+}
+
+.yes {
+  background-color: #4caf50; /* Green accent for "Yes" */
+}

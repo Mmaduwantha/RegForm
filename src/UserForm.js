@@ -8,6 +8,7 @@ const UserForm = () => {
     email: "",
     education: "",
     jobTitle: "",
+    skills: "",
     jobdescription: "",
   });
 
@@ -21,6 +22,7 @@ const UserForm = () => {
     if (!formData.age || isNaN(formData.age)) errors.age = "Valid age is required.";
     if (!formData.email.includes("@")) errors.email = "Valid email is required.";
     if (!formData.education) errors.education = "Education is required.";
+    if (!formData.skills) errors.skills = "Skills are required.";
     return errors;
   };
 
@@ -32,22 +34,38 @@ const UserForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validate();
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      console.log("Form Data:", formData);
-      setFormSubmitted(true);
-      setFormData({
-        name: "",
-        age: "",
-        email: "",
-        education: "",
-        jobTitle: "",
-        jobdescription: "",
-      });
+      try {
+        const response = await fetch('http://localhost:3000/test', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        
+
+        if (response.ok) {
+          console.log(data)
+          const answer = data.answer; // Ensure no extra spaces or cases
+          if (answer === 'yes') {
+            window.location.href = "/yes"; // Redirect to the /yes route
+          } else if (answer === 'no') {
+            window.location.href = "/no"; // Redirect to the /no route
+          }
+        } else {
+          console.log("Error submitting form");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
@@ -124,14 +142,26 @@ const UserForm = () => {
           />
         </div>
 
-        {/* Description Field */}
+        {/* Skills Field */}
         <div className="form-group">
-          <label htmlFor="description">Job Description</label>
+          <label htmlFor="skills">Skills and projects</label>
+          <textarea
+            id="skills"
+            name="skills"
+            placeholder="Enter your skills"
+            value={formData.skills}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+
+        {/* Job Description Field */}
+        <div className="form-group">
+          <label htmlFor="jobdescription">Job Description</label>
           <textarea
             id="jobdescription"
             name="jobdescription"
             placeholder="Job Describe"
-            value={formData.description}
+            value={formData.jobdescription}
             onChange={handleChange}
           ></textarea>
         </div>
