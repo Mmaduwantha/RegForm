@@ -54,7 +54,8 @@ const UserForm = () => {
 
         if (response.ok) {
           console.log(data)
-          const answer = data.answer; // Ensure no extra spaces or cases
+          const answer = data.answer.toLowerCase(); // Ensure no extra spaces or cases
+          console.log(answer)
           if (answer === 'yes') {
             window.location.href = "/yes"; // Redirect to the /yes route
           } else if (answer === 'no') {
